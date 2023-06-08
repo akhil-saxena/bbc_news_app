@@ -10,7 +10,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/logo_bbc_news"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo_bbc_news"
+        android:roundIcon="@drawable/ic_bbc_news"
         android:supportsRtl="true"
         android:theme="@style/Theme.NavDrawer"
         tools:targetApi="31">

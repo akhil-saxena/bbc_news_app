@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
+        binding.appBarMain.toolbar.title = "BBC News"
 
         binding.appBarMain.fab.setOnClickListener {
 //                view ->

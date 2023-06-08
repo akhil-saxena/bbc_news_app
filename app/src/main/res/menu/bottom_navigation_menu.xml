@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/newspaper"
+        android:title="Trending" />
+    <item
+        android:id="@+id/nav_favorites"
+        android:icon="@drawable/notifications"
+        android:title="Favorites" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/account_circle"
+        android:title="Profile" />
+</menu>

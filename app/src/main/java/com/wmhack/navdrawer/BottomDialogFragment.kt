@@ -120,12 +120,15 @@ class BottomDialogFragment : DialogFragment() {
                    val responseBody = response.body().toString()
                     //val responseBody = res
                     Log.d("API response body", responseBody.toString())
-                    val gson = Gson().toJson(responseBody)
+                    val gson = Gson()
+                val gsonJson = Gson().toJson(responseBody)
 
                     Log.d("API response json", gson.toString() )
                     //val gson = Gson()
                     // Parse the API response using Gson
-                    //val imageResponse = gson.fromJson(responseBody, APIResponse::class.java)
+                    val imageResponse = gson.fromJson(responseBody, APIResponse::class.java)
+
+
 
                     // Retrieve the image URL from the API response
                     //val imageUrl = imageResponse?.imageUrl
