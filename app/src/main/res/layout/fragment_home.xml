@@ -61,11 +61,11 @@
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/LabelText"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="130dp"
         android:layout_alignParentRight="true"
-        android:gravity= "center_vertical|right"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center_vertical|right"
         android:paddingEnd="5dp"
         android:text="Powered by Walmart DSP"
         android:textColor="@color/grey_dark"
@@ -74,24 +74,22 @@
         tools:ignore="HardcodedText" />
 
     <!-- Banner Carousel -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categoryRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@id/adImage"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:paddingStart="5dp" />
-
-    <!--   Will do this later-->
     <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/recyclerView"-->
+    <!--        android:id="@+id/categoryRecyclerView"-->
     <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_below="@id/categoryRecyclerView"-->
+    <!--        android:layout_height="60dp"-->
+    <!--        android:layout_below="@id/adImage"-->
     <!--        android:layout_marginTop="10dp"-->
     <!--        android:orientation="horizontal"-->
-    <!--        android:padding="5dp"-->
-    <!--        tools:listitem="@layout/item_product" />-->
+    <!--        android:paddingStart="5dp" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/adText"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        tools:listitem="@layout/item_product" />
 
 </RelativeLayout>

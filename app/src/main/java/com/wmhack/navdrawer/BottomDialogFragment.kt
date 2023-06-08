@@ -8,13 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import com.google.gson.Gson
+import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.IOException
 
@@ -32,25 +36,32 @@ class BottomDialogFragment : DialogFragment() {
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_bottom_dialog, container, false)
         latitudeEditText = view.findViewById(R.id.latitudeEditText)
         longitudeEditText = view.findViewById(R.id.longitudeEditText)
         submitButton = view.findViewById(R.id.submitButton)
 
-        val defaultLatitude = "123.67"
-        val defaultLongitude = "167.45"
-        submitButton.setOnClickListener {
-            val latitude = latitudeEditText.text.toString()
-            val longitude = longitudeEditText.text.toString()
+//        val defaultLatitude = "77.1025"
+//        val defaultLongitude = "28.7041"
 
-            if (latitude.isBlank() || longitude.isBlank()) {
-                latitudeEditText.setText(defaultLatitude)
-                longitudeEditText.setText(defaultLongitude)
+        submitButton.setOnClickListener {
+            var latitude = latitudeEditText.text.toString()
+            var longitude = longitudeEditText.text.toString()
+            val defaultLatitude = "77.1025"
+            val defaultLongitude = "28.7041"
+
+            if (latitude.isNullOrEmpty() || longitude.isNullOrEmpty()) {
+                latitude = defaultLatitude
+                longitude = defaultLongitude
+                Log.d("Latitude", latitude.toString())
+                Log.d("longitude", longitude.toString())
 
             }
             sendRequest(latitude, longitude)
-            // Navigate to the homepage after saving the location data
+
             dismiss()
         }
         return view
@@ -59,32 +70,6 @@ class BottomDialogFragment : DialogFragment() {
 
     private fun sendRequest(latitude: String, longitude: String) {
         val url = "https://www-qa.sams.com.mx/api/v1/dsp/getAds"
-        //val url = "https://mocki.io/v1/87d432c7-26e0-4245-99a2-7e8db6234672"
-        // Replace with your API endpoint
-        val res = "{\n" +
-                "    \"statusCode\": \"SUCCESS\",\n" +
-                "    \"data\": {\n" +
-                "        \"event_type\": \"Sunny\",\n" +
-                "        \"event_name\": \"Weather\",\n" +
-                "        \"img_url\": \"https://i5.walmartimages.com/dfwrs/d718042f-3580/k2-_d37b02fd-1ad9-462a-aa14-9e983faa0dcb.v1.jpg\",\n" +
-                "        \"lp_url\": \"2023-05-31T17:59:41.970879Z\",\n" +
-                "        \"adTitle\": \"Test Title Page\",\n" +
-                "        \"adSubtitle\": \"Test Ad SubTitle\",\n" +
-                "        \"adDescription\": \"Testing\",\n" +
-                "        \"ctaText\": \"Button\",\n" +
-                "        \"backgroundColor\": \"F1F1F2\",\n" +
-                "        \"textDefault\": \"333333\",\n" +
-                "        \"textHover\": \"FFFFFF\",\n" +
-                "        \"textFocus\": \"FFFFFF\",\n" +
-                "        \"buttonDefault\": \"F1F1F2\",\n" +
-                "        \"buttonHover\": \"0071DC\",\n" +
-                "        \"buttonFocus\": \"041E42\"\n" +
-                "    }\n" +
-                "}"
-
-//        val requestBody = FormBody.Builder()
-//            .add("{{\"geo\":", """{"longitude": $longitude, "latitude": $latitude}}""")
-//            .build()
 
         val jsonBody = """
         {
@@ -96,51 +81,52 @@ class BottomDialogFragment : DialogFragment() {
     """.trimIndent()
 
 
-        val mediaType = MediaType.parse("application/json")
-        val requestBody = RequestBody.create(mediaType, jsonBody)
+//        val mediaType = MediaType.parse("application/json")
+//        val requestBody = RequestBody.create(mediaType, jsonBody)
 
-        val request = Request.Builder()
-            .url(url)
-            .post(requestBody)
-            .build()
+        val mediaType = "application/json".toMediaType()
+        val requestBody = jsonBody.toRequestBody(mediaType)
 
+
+        val request = Request.Builder().url(url).post(requestBody).build()
 
         Log.d("API request", request.toString())
-        Log.d("API request body", requestBody.toString())
-
         val client = OkHttpClient()
 
         client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
-            }
-
-
-            override fun onResponse(call: okhttp3.Call, response: Response) {
-                if (response.isSuccessful) {
-                   val responseBody = response.body().toString()
-                    //val responseBody = res
-                    Log.d("API response body", responseBody.toString())
-                    val gson = Gson()
-                val gsonJson = Gson().toJson(responseBody)
-
-                    Log.d("API response json", gson.toString() )
-                    //val gson = Gson()
-                    // Parse the API response using Gson
-                    val imageResponse = gson.fromJson(responseBody, APIResponse::class.java)
-
-
-
-                    // Retrieve the image URL from the API response
-                    //val imageUrl = imageResponse?.imageUrl
-                    //Log.d("Image URL in Response", imageUrl.toString())
-
-                    // Pass the image URL to the ImageActivity
-                } else { // Request failed, handle the error
-                    Log.d("API response fail", response.toString())
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("Failing", e.toString())
+                activity?.runOnUiThread() {
+                    Toast.makeText(activity, "API request failed", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body?.string()
+
+                    val gson = Gson()
+                    // Parse the API response using Gson
+                    val json_response = gson.fromJson(responseBody, APIResponse::class.java)
+
+                    // Retrieve the image URL from the API response
+                    val imageUrl = json_response?.data?.img_url
+                    Log.d("Image URL in Response", imageUrl.toString())
+
+                    val result = imageUrl
+                    setFragmentResult("requestKey", bundleOf("bundleKey" to result))
+
+                } else { // Request failed, handle the error
+                    Log.d("Failing", "Hallo")
+                    activity?.runOnUiThread() {
+                        Toast.makeText(activity, "API request failed", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+
         }
         )
     }
-
 }

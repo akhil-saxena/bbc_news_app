@@ -2,6 +2,7 @@ package com.wmhack.navdrawer
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.ImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -11,9 +12,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.wmhack.navdrawer.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var horizontalRecyclerView: RecyclerView
+    private lateinit var productAdapter: ProductAdapter
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -46,6 +51,9 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        horizontalRecyclerView = findViewById(R.id.recyclerView)
+        callRecyclerView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -57,5 +65,24 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun callRecyclerView() {
+
+        // Set up RecyclerView with a horizontal layout
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        horizontalRecyclerView.layoutManager = layoutManager
+
+        // Set up your RecyclerView adapter and populate it with data
+        val products = listOf(
+            Product(R.drawable.img1),
+            Product(R.drawable.img2),
+            Product(R.drawable.img3),
+            Product(R.drawable.img4),
+            Product(R.drawable.img5),
+        )
+
+        productAdapter = ProductAdapter(products)
+        horizontalRecyclerView.adapter = productAdapter
     }
 }
