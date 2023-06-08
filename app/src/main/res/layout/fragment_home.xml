@@ -8,8 +8,6 @@
     tools:context=".ui.home.HomeFragment">
 
     <!--    home fragment where our content goes -->
-
-    <!-- Our Ad Image -->
     <ImageView
         android:id="@+id/Image"
         android:layout_width="400dp"
@@ -23,19 +21,56 @@
         android:src="@drawable/main_banner"
         tools:src="@drawable/main_banner" />
 
-    <ImageView
-        android:id="@+id/adImage"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/LabelText"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/Image"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_alignParentRight="true"
+        android:gravity= "center_vertical|right"
+        android:paddingEnd="5dp"
+        android:text="Powered by Walmart DSP"
+        android:textColor="@color/grey_dark"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <!-- Our Ad Image -->
+    <ImageView
+        android:id="@+id/adImage"
+        android:layout_width="400dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/LabelText"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_weight="1"
+        android:scaleType="fitXY"
         android:src="@drawable/banner_1"
         tools:src="@drawable/banner_1" />
+
+    <TextView
+        android:id="@+id/adText"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LabelText"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="130dp"
+        android:layout_alignParentRight="true"
+        android:gravity= "center_vertical|right"
+        android:paddingEnd="5dp"
+        android:text="Powered by Walmart DSP"
+        android:textColor="@color/grey_dark"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText" />
 
     <!-- Banner Carousel -->
     <androidx.recyclerview.widget.RecyclerView
@@ -47,16 +82,16 @@
         android:orientation="horizontal"
         android:paddingStart="5dp" />
 
-<!--   Will do this later-->
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@id/categoryRecyclerView"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:padding="5dp"-->
-<!--        tools:listitem="@layout/item_product" />-->
+    <!--   Will do this later-->
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/recyclerView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@id/categoryRecyclerView"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:padding="5dp"-->
+    <!--        tools:listitem="@layout/item_product" />-->
 
     <!-- Bottom Static Menu -->
     <LinearLayout
@@ -69,17 +104,17 @@
         android:orientation="horizontal"
         android:padding="2dp">
 
-<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--            android:id="@+id/nav_view"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="0dp"-->
-<!--            android:layout_marginEnd="0dp"-->
-<!--            android:background="?android:attr/windowBackground"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintRight_toRightOf="parent"-->
-<!--            app:menu="@menu/bottom_nav_menu" />-->
+        <!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+        <!--            android:id="@+id/nav_view"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="0dp"-->
+        <!--            android:layout_marginEnd="0dp"-->
+        <!--            android:background="?android:attr/windowBackground"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--            app:layout_constraintRight_toRightOf="parent"-->
+        <!--            app:menu="@menu/bottom_nav_menu" />-->
     </LinearLayout>
 
 </RelativeLayout>

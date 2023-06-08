@@ -1,7 +1,6 @@
 package com.wmhack.navdrawer
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,15 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import com.google.gson.Gson
-import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.FormBody
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.Response
-import androidx.fragment.app.DialogFragment
 import java.io.IOException
 
 class BottomDialogFragment : DialogFragment() {
@@ -58,6 +56,7 @@ class BottomDialogFragment : DialogFragment() {
         return view
     }
 
+
     private fun sendRequest(latitude: String, longitude: String) {
         val url = "https://www-qa.sams.com.mx/api/v1/dsp/getAds"
         //val url = "https://mocki.io/v1/87d432c7-26e0-4245-99a2-7e8db6234672"
@@ -83,15 +82,28 @@ class BottomDialogFragment : DialogFragment() {
                 "    }\n" +
                 "}"
 
-        val requestBody = FormBody.Builder()
-            .add("{{geo", """{"longitude": $longitude, "latitude": $latitude}""")
-            .build()
+//        val requestBody = FormBody.Builder()
+//            .add("{{\"geo\":", """{"longitude": $longitude, "latitude": $latitude}}""")
+//            .build()
 
+        val jsonBody = """
+        {
+            "geo": {
+                "longitude": $longitude,
+                "latitude": $latitude
+            }
+        }
+    """.trimIndent()
+
+
+        val mediaType = MediaType.parse("application/json")
+        val requestBody = RequestBody.create(mediaType, jsonBody)
 
         val request = Request.Builder()
             .url(url)
             .post(requestBody)
             .build()
+
 
         Log.d("API request", request.toString())
         Log.d("API request body", requestBody.toString())
@@ -107,14 +119,17 @@ class BottomDialogFragment : DialogFragment() {
                 if (response.isSuccessful) {
                    val responseBody = response.body().toString()
                     //val responseBody = res
-                    Log.d("API response body", responseBody)
-                    val gson = Gson()
+                    Log.d("API response body", responseBody.toString())
+                    val gson = Gson().toJson(responseBody)
+
+                    Log.d("API response json", gson.toString() )
+                    //val gson = Gson()
                     // Parse the API response using Gson
-                    val imageResponse = gson.fromJson(responseBody, APIResponse::class.java)
+                    //val imageResponse = gson.fromJson(responseBody, APIResponse::class.java)
 
                     // Retrieve the image URL from the API response
-                    val imageUrl = imageResponse?.imageUrl
-                    Log.d("Image URL in Response", imageUrl.toString())
+                    //val imageUrl = imageResponse?.imageUrl
+                    //Log.d("Image URL in Response", imageUrl.toString())
 
                     // Pass the image URL to the ImageActivity
                 } else { // Request failed, handle the error
