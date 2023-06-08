@@ -1,24 +1,59 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="400dp"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/edit_text_input1"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/coordinateLabelText"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:hint="Input 1" />
+        android:layout_marginBottom="20dp"
+        android:paddingStart="75dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Enter Coordinates"
+        android:textColor="@color/red"
+        android:textSize="25sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <EditText
-        android:id="@+id/edit_text_input2"
+        android:id="@+id/latitudeEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Input 2" />
+        android:layout_height="48dp"
+        android:autofillHints="latitude"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="@string/latitude"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:paddingStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/coordinateLabelText" />
+
+    <EditText
+        android:id="@+id/longitudeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        android:autofillHints="longitude"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="@string/longitude"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:paddingStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/latitudeEditText" />
 
     <Button
-        android:id="@+id/button_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit" />
+        android:id="@+id/submitButton"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/red"
+        android:text="@string/submit"
+        app:layout_constraintTop_toBottomOf="@id/longitudeEditText" />
+
 </LinearLayout>

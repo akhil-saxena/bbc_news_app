@@ -34,8 +34,8 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:layout_weight="1"
-        android:src="@drawable/default_image"
-        tools:src="@drawable/default_image" />
+        android:src="@drawable/banner_1"
+        tools:src="@drawable/banner_1" />
 
     <!-- Banner Carousel -->
     <androidx.recyclerview.widget.RecyclerView

@@ -33,11 +33,12 @@ class BottomDialogFragment : DialogFragment() {
         return dialog
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_bottom_dialog, container, false)
-        latitudeEditText = view.findViewById(R.id.edit_text_input1)
-        longitudeEditText = view.findViewById(R.id.edit_text_input2)
-        submitButton = view.findViewById(R.id.button_submit)
+        latitudeEditText = view.findViewById(R.id.latitudeEditText)
+        longitudeEditText = view.findViewById(R.id.longitudeEditText)
+        submitButton = view.findViewById(R.id.submitButton)
 
         val defaultLatitude = "123.67"
         val defaultLongitude = "167.45"
@@ -45,7 +46,7 @@ class BottomDialogFragment : DialogFragment() {
             val latitude = latitudeEditText.text.toString()
             val longitude = longitudeEditText.text.toString()
 
-            if (latitude == "" || longitude == "") {
+            if (latitude.isBlank() || longitude.isBlank()) {
                 latitudeEditText.setText(defaultLatitude)
                 longitudeEditText.setText(defaultLongitude)
 
@@ -82,23 +83,19 @@ class BottomDialogFragment : DialogFragment() {
                 "    }\n" +
                 "}"
 
-
         val requestBody = FormBody.Builder()
-            .add("latitude", latitude)
-            .add("longitude", longitude)
+            .add("{{geo", """{"longitude": $longitude, "latitude": $latitude}""")
             .build()
 
-        val reqBody = FormBody.Builder()
-            .add("geo", requestBody.toString()).
-            build()
-        Log.d("API reqBody", reqBody.toString())
 
         val request = Request.Builder()
             .url(url)
-            .post(reqBody)
+            .post(requestBody)
             .build()
 
         Log.d("API request", request.toString())
+        Log.d("API request body", requestBody.toString())
+
         val client = OkHttpClient()
 
         client.newCall(request).enqueue(object : Callback {
@@ -108,9 +105,9 @@ class BottomDialogFragment : DialogFragment() {
 
             override fun onResponse(call: okhttp3.Call, response: Response) {
                 if (response.isSuccessful) {
-                   // val responseBody = response.body().toString()
-                    val responseBody = res
-
+                   val responseBody = response.body().toString()
+                    //val responseBody = res
+                    Log.d("API response body", responseBody)
                     val gson = Gson()
                     // Parse the API response using Gson
                     val imageResponse = gson.fromJson(responseBody, APIResponse::class.java)
@@ -121,6 +118,7 @@ class BottomDialogFragment : DialogFragment() {
 
                     // Pass the image URL to the ImageActivity
                 } else { // Request failed, handle the error
+                    Log.d("API response fail", response.toString())
                 }
             }
         }
