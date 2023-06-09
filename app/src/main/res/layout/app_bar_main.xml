@@ -36,6 +36,7 @@
 
     <include android:id="@+id/homepage"
         layout="@layout/content_main" />
+
     <!-- location button-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
