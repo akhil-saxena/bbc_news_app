@@ -44,8 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="60dp"
-        app:backgroundTint="@color/white"
+        android:layout_marginBottom="55dp"
+        app:backgroundTint="@color/red"
         app:srcCompat="@drawable/pin_drop" />
 
     <!-- Bottom Static Menu -->

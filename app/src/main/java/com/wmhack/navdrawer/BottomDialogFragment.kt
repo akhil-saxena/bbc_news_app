@@ -30,7 +30,7 @@ class BottomDialogFragment : DialogFragment() {
     private lateinit var myInterface: MyInterface
 
     interface MyInterface {
-        fun onVariablePassed(value: String)
+        fun onVariablePassed(value: APIResponseData)
     }
 
 
@@ -40,7 +40,7 @@ class BottomDialogFragment : DialogFragment() {
     }
 
     // Wherever you want to pass the variable value, call the interface function
-    fun passVariableToActivity(value: String) {
+    fun passVariableToActivity(value: APIResponseData) {
         myInterface.onVariablePassed(value)
     }
 
@@ -126,18 +126,20 @@ class BottomDialogFragment : DialogFragment() {
 
                     // Retrieve the image URL from the API response
                     val imageUrl = json_response?.data?.img_url
+                    val adTitle = json_response?.data?.adTitle
+                    val lpUrl = json_response?.data?.lp_url
+
                     Log.d("Image URL in Response", imageUrl.toString())
 
-                    if (imageUrl != null) {
-                        passVariableToActivity(imageUrl)
-                    }
-                    else(
-                            passVariableToActivity("NO_IMAGE_FOUND"))
-                    // Set the string URL in the shared ViewModel
-//                    if (imageUrl != null) {
-//                        setImageUrl(imageUrl)
-//                    }
+                    val API_Response = APIResponseData(imageUrl, lpUrl, adTitle)
 
+                    if (API_Response != null) {
+                        passVariableToActivity(API_Response)
+                    }
+                    
+                    else{
+                        Log.d("API_Data_Invalid", "API_Data_Invalid")
+                    }
                 } else { // Request failed, handle the error
                     Log.d("Failing", "Hallo")
 //                    activity?.runOnUiThread() {

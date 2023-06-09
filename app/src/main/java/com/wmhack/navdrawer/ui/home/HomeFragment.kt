@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.adText
-        textView.setText("Test Title Page")
+//        textView.setText("Test Title Page")
         return root
     }
 

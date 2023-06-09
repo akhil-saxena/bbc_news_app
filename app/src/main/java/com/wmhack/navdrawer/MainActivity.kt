@@ -1,11 +1,13 @@
 package com.wmhack.navdrawer
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -30,13 +32,18 @@ class MainActivity : AppCompatActivity(), BottomDialogFragment.MyInterface {
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var categoryRecyclerView: RecyclerView
     private lateinit var image: ImageView
+    private lateinit var adText: TextView
+    private var url: String = "https://www.walmart.com"
+    private lateinit var label: TextView
 
-    fun displayImage(result: String?) {
+    @SuppressLint("SetTextI18n")
+    fun displayImage(adImage: String?, title: String?) {
 //         Load our ad image into this ImageView
-
         runOnUiThread {
+            adText.text = title
+            label.text =  "Powered by Walmart DSP"
             Glide.with(this)  // You can use a library like Glide or Picasso to handle image loading
-                .load(result)
+                .load(adImage)
                 .placeholder(R.drawable.rounded_edit_text) // Set a placeholder image
                 .error(R.drawable.default_one) // Set an error image
                 .into(image)
@@ -44,11 +51,12 @@ class MainActivity : AppCompatActivity(), BottomDialogFragment.MyInterface {
 
     }
 
-    override fun onVariablePassed(value: String) {
+    override fun onVariablePassed(value: APIResponseData) {
         // Access the passed variable value here
         // You can use it as needed in your activity
-        Log.d("HelloWorld", value)
-        displayImage(value)
+        Log.d("HelloWorld", value.toString())
+        url= value.lpUrl.toString()
+        displayImage(value.imgUrl, value.adTitle)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,13 +89,12 @@ class MainActivity : AppCompatActivity(), BottomDialogFragment.MyInterface {
 
 
             // Set up RecyclerView with a horizontal layout
-            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             horizontalRecyclerView.layoutManager = layoutManager
 
             // Set up your RecyclerView adapter and populate it with data
             val products = listOf(
-                Product(R.drawable.carousel_first),
-                Product(R.drawable.carousel_first)
+                Product(R.drawable.img)
             )
 
             productAdapter = ProductAdapter(products)
@@ -109,11 +116,14 @@ class MainActivity : AppCompatActivity(), BottomDialogFragment.MyInterface {
             categoryRecyclerView.adapter = categoryAdapter
 
 
-        image = binding.appBarMain.homepage.homefragment.adImage
+//        image = binding.appBarMain.homepage.homefragment.adImage
+        image = findViewById(R.id.adImage)
+        adText = findViewById(R.id.adText)
+        label = findViewById(R.id.LabelText)
         image.setOnClickListener {
             // Handle the click event here
             // Example: show a toast message
-            openWebsite("https://www.walmart.com")
+            openWebsite(url)
             Toast.makeText(this@MainActivity, "Image clicked", Toast.LENGTH_SHORT).show()
         }
     }
